@@ -7,7 +7,9 @@ namespace MyCommon
     {
         public string ArchSpecificPath()
         {
-            var archSpecificPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, Environment.Is64BitProcess ? "x64" : "x86", "");
+            //var archSpecificPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, Environment.Is64BitProcess ? "x64" : "x86", "");
+            //return archSpecificPath;
+            var archSpecificPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Environment.Is64BitProcess ? "x64" : "x86", "");
             return archSpecificPath;
         }
 

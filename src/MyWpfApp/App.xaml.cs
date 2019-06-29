@@ -18,7 +18,10 @@ namespace MyWpfApp
         {
             var environmentHelper = EnvironmentHelper.Instance;
             var environmentInfo = environmentHelper.CreateEnvironmentInfo();
-            MessageBox.Show(environmentInfo.ToIniString(null));
+            Console.WriteLine(environmentInfo.Is64BitProcess);
+            Console.WriteLine(environmentHelper.ArchSpecificPath());
+
+            //MessageBox.Show(environmentInfo.ToIniString(null));
         }
     }
 }
