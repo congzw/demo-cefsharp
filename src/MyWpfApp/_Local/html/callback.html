@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>demo page for callback</title>
+    <script src="jquery-1.12.4.min.js"></script>
+    <script src="callback.js"></script>
+</head>
+<body>
+    <div class="theContainer">
+        <div>
+            <div class="theArea">
+                <h2>callback demo</h2>
+            </div>
+        </div>
+        <div class="demo">
+            <hr />
+            <input type="button" value="fooSuccess" onclick="myVo.foo(true);" />
+            <input type="button" value="fooFail" onclick="myVo.foo(false);" />
+            <input type="button" value="FooNotExist!" onclick="myVo.Foo();" />
+            <input type="button" value="blah" onclick="myVo.blah();" />
+            <input type="button" value="blah2" onclick="myVo.blah2();" />
+            <input type="button" value="blah3" onclick="myVo.blah3();" />
+        </div>
+    </div>
+</body>
+</html>

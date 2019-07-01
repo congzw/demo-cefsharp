@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using MyCefLibs.CefBrowser;
 using MyCommon;
 
 namespace MyWpfApp
@@ -16,11 +17,14 @@ namespace MyWpfApp
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            var environmentHelper = EnvironmentHelper.Instance;
-            var environmentInfo = environmentHelper.CreateEnvironmentInfo();
-            Console.WriteLine(environmentInfo.Is64BitProcess);
-            Console.WriteLine(environmentHelper.ArchSpecificPath());
+            CefConfig.SupportAnyCpu();
 
+            //todo config
+            this.StartupUri = new Uri("CallbackWindow.xaml", UriKind.Relative);
+            //var environmentHelper = EnvironmentHelper.Instance;
+            //var environmentInfo = environmentHelper.CreateEnvironmentInfo();
+            //Console.WriteLine(environmentInfo.Is64BitProcess);
+            //Console.WriteLine(environmentHelper.ArchSpecificPath());
             //MessageBox.Show(environmentInfo.ToIniString(null));
         }
     }
