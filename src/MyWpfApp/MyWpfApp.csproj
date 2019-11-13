@@ -56,8 +56,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Demos\Boots\EntryLogic.cs" />
+    <Compile Include="Demos\UI\Shells\IAppApi.cs" />
+    <Compile Include="Demos\UI\Shells\IMachineApi.cs" />
+    <Compile Include="Demos\UI\Shells\ShellApi.cs" />
+    <Compile Include="Demos\UI\Shells\IViewApi.cs" />
+    <Compile Include="Demos\UI\Shells\IWindowApi.cs" />
+    <Compile Include="Demos\UI\Windows\DemoControlWindow.xaml.cs">
+      <DependentUpon>DemoControlWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Demos\UI\Windows\MasterWindow.xaml.cs">
+      <DependentUpon>MasterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Demos\UI\Windows\ShellWindow.xaml.cs">
+      <DependentUpon>ShellWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\CallbackWindowJs.cs" />
     <Page Include="CallbackWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Demos\UI\Windows\DemoControlWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Demos\UI\Windows\MasterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Demos\UI\Windows\ShellWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,5 +151,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
