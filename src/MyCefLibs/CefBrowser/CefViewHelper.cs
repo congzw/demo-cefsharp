@@ -28,13 +28,6 @@ namespace MyCefLibs.CefBrowser
             }
         }
 
-        //public void InitCefBrowser(AsyncJsObject asyncJsObject, string uri)
-        //{
-        //    var cefConfig = CefConfig.Default;
-        //    Browser = cefConfig.CreateChromiumWebBrowser(true, asyncJsObject);
-        //    Browser.Address = uri;
-        //}
-
         public void SetUri(string uri)
         {
             if (Browser == null)
