@@ -61,7 +61,7 @@
     </ApplicationDefinition>
     <Compile Include="Demos\Boots\EntryLogic.cs" />
     <Compile Include="Demos\UI\Shells\IAppApi.cs" />
-    <Compile Include="Demos\UI\Shells\IMachineApi.cs" />
+    <Compile Include="Demos\UI\Shells\ISystemApi.cs" />
     <Compile Include="Demos\UI\Shells\ShellApi.cs" />
     <Compile Include="Demos\UI\Shells\IViewApi.cs" />
     <Compile Include="Demos\UI\Shells\IWindowApi.cs" />

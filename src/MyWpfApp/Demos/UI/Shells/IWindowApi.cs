@@ -3,6 +3,9 @@
     public interface IWindowApi
     {
         void ShowWindowMessage(WindowMessage msg);
+
+        void SwitchPosition();
+
         //void OpenWindow(object args);
         //void CloseWindow(object args);
         //void SetWindow(object args);

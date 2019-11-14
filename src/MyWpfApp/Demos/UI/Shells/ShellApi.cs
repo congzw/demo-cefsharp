@@ -8,7 +8,7 @@ using MyWpfApp.Demos.Win32;
 
 namespace MyWpfApp.Demos.UI.Shells
 {
-    public interface IShellApi : IMachineApi, IAppApi, IWindowApi, IViewApi
+    public interface IShellApi : ISystemApi, IAppApi, IWindowApi, IViewApi
     {
     }
 
@@ -96,6 +96,18 @@ namespace MyWpfApp.Demos.UI.Shells
             shellWindow?.Dispatcher?.Invoke(() => { shellWindow.ShowMessage(string.Format("{0} => ", shellWindow.WindowId) + model.Message); });
         }
 
+        public void SwitchPosition()
+        {
+            if (ShellWindows.Count <= 1)
+            {
+                return;
+            }
+
+            var one = ShellWindows[0];
+            var another = ShellWindows[1];
+            ChangePosition(one, another);
+        }
+
         public AppEnvInfo GetAppEnvInfo()
         {
             var appEnvInfo = new AppEnvInfo();
@@ -135,6 +147,24 @@ namespace MyWpfApp.Demos.UI.Shells
             var theOne =
                 ShellWindows.FirstOrDefault(x => x.WindowId.Equals(windowId, StringComparison.OrdinalIgnoreCase));
             return theOne;
+        }
+
+        private void ChangePosition(ShellWindow one, ShellWindow another)
+        {
+            var left = one.Left;
+            var top = one.Top;
+            var width = one.Width;
+            var height = one.Height;
+
+            one.Left = another.Left;
+            one.Top = another.Top;
+            one.Width = another.Width;
+            one.Height = another.Height;
+
+            another.Left = left;
+            another.Top = top;
+            another.Width = width;
+            another.Height = height;
         }
     }
 }

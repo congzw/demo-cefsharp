@@ -1,6 +1,6 @@
 ﻿namespace MyWpfApp.Demos.UI.Shells
 {
-    public interface IMachineApi
+    public interface ISystemApi
     {
         //关机
         void Shutdown();

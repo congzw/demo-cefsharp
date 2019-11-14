@@ -41,10 +41,15 @@ namespace MyWpfApp.Demos.UI.Windows
             ShellApi.RestartApp();
         }
 
-        private void SwitchTask_Click(object sender, RoutedEventArgs e)
+        private void SwitchTaskButton_Click(object sender, RoutedEventArgs e)
         {
             var shellApiShowTask = ShellApi.ShowTask;
             ShellApi.ShowTask = !shellApiShowTask;
+        }
+
+        private void SwitchPositionButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShellApi.SwitchPosition();
         }
     }
 }

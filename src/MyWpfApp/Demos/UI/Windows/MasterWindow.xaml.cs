@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using MyWpfApp.Demos.UI.Shells;
 using MyWpfApp.Demos.Win32;
 
@@ -87,7 +88,8 @@ namespace MyWpfApp.Demos.UI.Windows
             shellWindow1.Width = primary.DeviceBounds.Width;
             shellWindow1.Height = primary.DeviceBounds.Height;
             shellWindow1.Title = primary.DeviceName;
-            
+            shellWindow1.Background = Brushes.White;
+
             var second = WpfScreen.AllScreens().Single(x => !x.IsPrimary);
             var shellWindow2 = new ShellWindow();
             shellWindow2.WindowId = ShellConst.WindowId_Shell2;
@@ -99,6 +101,7 @@ namespace MyWpfApp.Demos.UI.Windows
             shellWindow2.Width = second.DeviceBounds.Width;
             shellWindow2.Height = second.DeviceBounds.Height;
             shellWindow2.Title = second.DeviceName;
+            shellWindow1.Background = Brushes.Yellow;
 
             var shellWindows = new List<ShellWindow>();
             shellWindows.Add(shellWindow1);
