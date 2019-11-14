@@ -74,6 +74,7 @@
     <Compile Include="Demos\UI\Windows\ShellWindow.xaml.cs">
       <DependentUpon>ShellWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Demos\Win32\ClsWin32.cs" />
     <Compile Include="Demos\Win32\temp\Win32Helper.cs" />
     <Compile Include="Demos\Win32\temp\WpfMonitor.cs" />
     <Compile Include="Demos\Win32\WpfScreen.cs" />

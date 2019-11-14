@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using MyWpfApp.Demos.UI.Shells;
 
@@ -18,6 +17,7 @@ namespace MyWpfApp.Demos.UI.Windows
         protected override void OnClosing(CancelEventArgs e)
         {
             ShellApi.CloseApp();
+            ShellApi.ShowTask = true;
             base.OnClosing(e);
         }
 
@@ -39,6 +39,12 @@ namespace MyWpfApp.Demos.UI.Windows
         private void RestartAppButton_Click(object sender, RoutedEventArgs e)
         {
             ShellApi.RestartApp();
+        }
+
+        private void SwitchTask_Click(object sender, RoutedEventArgs e)
+        {
+            var shellApiShowTask = ShellApi.ShowTask;
+            ShellApi.ShowTask = !shellApiShowTask;
         }
     }
 }

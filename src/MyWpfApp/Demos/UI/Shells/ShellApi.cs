@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using MyWpfApp.Demos.UI.Windows;
+using MyWpfApp.Demos.Win32;
 
 namespace MyWpfApp.Demos.UI.Shells
 {
@@ -13,6 +14,7 @@ namespace MyWpfApp.Demos.UI.Shells
 
     public class ShellApi : IShellApi
     {
+        private bool _showTask;
         public MasterWindow MasterWindow { get; }
 
         public IList<ShellWindow> ShellWindows { get; set; }
@@ -25,7 +27,7 @@ namespace MyWpfApp.Demos.UI.Shells
 
         public void Shutdown()
         {
-            ShowWindowMessage(new WindowMessage() {Message = "TODO shutdown -s -t 0"});
+            ShowWindowMessage(new WindowMessage() { Message = "TODO shutdown -s -t 0" });
             //try
             //{
             //    Process.Start(new ProcessStartInfo("shutdown", "-s -t 0")
@@ -42,7 +44,7 @@ namespace MyWpfApp.Demos.UI.Shells
 
         public void Restart()
         {
-            ShowWindowMessage(new WindowMessage() {Message = "TODO shutdown -r -t 0"});
+            ShowWindowMessage(new WindowMessage() { Message = "TODO shutdown -r -t 0" });
             //try
             //{
             //    Process.Start(new ProcessStartInfo("shutdown", "-r -t 0")
@@ -55,6 +57,16 @@ namespace MyWpfApp.Demos.UI.Shells
             //{
             //    MyDebugHelper.Exception(ex);
             //}
+        }
+
+        public bool ShowTask
+        {
+            get => _showTask;
+            set
+            {
+                _showTask = value;
+                ClsWin32.ShowTask(_showTask);
+            }
         }
 
         public void CloseApp()
@@ -75,7 +87,7 @@ namespace MyWpfApp.Demos.UI.Shells
 
         public void UpdateApp()
         {
-            ShowWindowMessage(new WindowMessage() {Message = "TODO Updating..."});
+            ShowWindowMessage(new WindowMessage() { Message = "TODO Updating..." });
         }
 
         public void ShowWindowMessage(WindowMessage model)
@@ -119,7 +131,7 @@ namespace MyWpfApp.Demos.UI.Shells
                     windowId = ShellConst.WindowId_Shell1;
                 }
             }
-            
+
             var theOne =
                 ShellWindows.FirstOrDefault(x => x.WindowId.Equals(windowId, StringComparison.OrdinalIgnoreCase));
             return theOne;

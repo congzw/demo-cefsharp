@@ -13,6 +13,7 @@
             <Button Content="Shutdown" Name="ShutdownButton" Width="75" Click="ShutdownButton_Click"/>
             <Button Content="CloseApp" Name="CloseAppButton" Width="75" Click="CloseAppButton_Click"/>
             <Button Content="RestartApp" Name="RestartAppButton" Width="75" Click="RestartAppButton_Click"/>
+            <Button Content="SwitchTask" Name="SwitchTask" Width="75" Click="SwitchTask_Click"/>
         </StackPanel>
     </Grid>
 </Window>

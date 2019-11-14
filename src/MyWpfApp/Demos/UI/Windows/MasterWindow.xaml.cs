@@ -14,7 +14,6 @@ namespace MyWpfApp.Demos.UI.Windows
         public MasterWindow()
         {
             InitializeComponent();
-
             this.Hide();
             ShowShellWindows();
         }
@@ -28,30 +27,36 @@ namespace MyWpfApp.Demos.UI.Windows
             }
             base.OnClosing(e);
         }
-        
+
+        public ShellApi ShellApi { get; set; }
+
         public void ShowShellWindows()
         {
             //根据配置和环境显示1~2个Shell窗体
-            ShellApi shellApi = null;
             var wpfScreens = WpfScreen.AllScreens().ToList();
             var wpfScreensCount = wpfScreens.Count;
             if (wpfScreensCount <= 1)
             {
                 var shellWindow1 = CreateShellWindow();
-                shellApi = new ShellApi(this, shellWindow1);
+                ShellApi = new ShellApi(this, shellWindow1);
             }
             else
             {
                 var shellWindows = CreateShellWindows();
-                shellApi = new ShellApi(this, shellWindows.ToArray());
+                ShellApi = new ShellApi(this, shellWindows.ToArray());
             }
 
-            foreach (var window in shellApi.ShellWindows)
+            //是否隐藏任务条
+            ShellApi.ShowTask = false;
+            
+            foreach (var window in ShellApi.ShellWindows)
             {
+                window.WindowStyle = WindowStyle.None;
+                window.ResizeMode = ResizeMode.NoResize;
                 window.Show();
             }
 
-            var ctrlWindow = new DemoControlWindow(shellApi);
+            var ctrlWindow = new DemoControlWindow(ShellApi);
             ctrlWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             ctrlWindow.WindowState = WindowState.Normal;
             ctrlWindow.Show();
@@ -62,6 +67,7 @@ namespace MyWpfApp.Demos.UI.Windows
         {
             var shellWindow1 = new ShellWindow();
             shellWindow1.WindowId = ShellConst.WindowId_Shell1;
+            
             shellWindow1.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             shellWindow1.WindowState = WindowState.Maximized;
             //shellWindow1.Title = WpfScreen.Primary.DeviceName;
@@ -81,8 +87,7 @@ namespace MyWpfApp.Demos.UI.Windows
             shellWindow1.Width = primary.DeviceBounds.Width;
             shellWindow1.Height = primary.DeviceBounds.Height;
             shellWindow1.Title = primary.DeviceName;
-
-
+            
             var second = WpfScreen.AllScreens().Single(x => !x.IsPrimary);
             var shellWindow2 = new ShellWindow();
             shellWindow2.WindowId = ShellConst.WindowId_Shell2;
