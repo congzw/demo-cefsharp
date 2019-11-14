@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using MyCefLibs.CefBrowser;
 using MyWpfApp.Demos.Boots;
 
 namespace MyWpfApp
@@ -7,6 +8,7 @@ namespace MyWpfApp
     {
         public App()
         {
+            CefConfig.SupportAnyCpu();
             this.Startup += App_Startup;
         }
 
