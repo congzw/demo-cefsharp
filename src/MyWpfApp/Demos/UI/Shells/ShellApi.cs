@@ -27,7 +27,7 @@ namespace MyWpfApp.Demos.UI.Shells
 
         public void Shutdown()
         {
-            ShowWindowMessage(new WindowMessage() { Message = "TODO shutdown -s -t 0" });
+            ShowWindowMessage(new WindowMessage() { WindowId = ShellConst.WindowId_Shell1, Message = "TODO shutdown -s -t 0" });
             //try
             //{
             //    Process.Start(new ProcessStartInfo("shutdown", "-s -t 0")
@@ -44,7 +44,7 @@ namespace MyWpfApp.Demos.UI.Shells
 
         public void Restart()
         {
-            ShowWindowMessage(new WindowMessage() { Message = "TODO shutdown -r -t 0" });
+            ShowWindowMessage(new WindowMessage() { WindowId = ShellConst.WindowId_Shell2, Message = "TODO shutdown -r -t 0" });
             //try
             //{
             //    Process.Start(new ProcessStartInfo("shutdown", "-r -t 0")
