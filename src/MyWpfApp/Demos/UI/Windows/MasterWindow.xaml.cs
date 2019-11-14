@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using MyWpfApp.Demos.Boots;
 using MyWpfApp.Demos.UI.Shells;
 using MyWpfApp.Demos.Win32;
 
@@ -29,83 +30,79 @@ namespace MyWpfApp.Demos.UI.Windows
             base.OnClosing(e);
         }
 
-        public ShellApi ShellApi { get; set; }
-
         public void ShowShellWindows()
         {
             //根据配置和环境显示1~2个Shell窗体
-            var wpfScreens = WpfScreen.AllScreens().ToList();
-            var wpfScreensCount = wpfScreens.Count;
-            if (wpfScreensCount <= 1)
-            {
-                var shellWindow1 = CreateShellWindow();
-                ShellApi = new ShellApi(this, shellWindow1);
-            }
-            else
-            {
-                var shellWindows = CreateShellWindows();
-                ShellApi = new ShellApi(this, shellWindows.ToArray());
-            }
+            var shellWindows = CreateShellWindows();
 
-            //是否隐藏任务条
-            ShellApi.ShowTask = false;
-            
-            foreach (var window in ShellApi.ShellWindows)
+            var entrySetting = EntrySetting.Instance;
+            var entryUri = entrySetting.StartupHtmlUri;
+
+            foreach (var window in shellWindows)
             {
                 window.WindowStyle = WindowStyle.None;
                 window.ResizeMode = ResizeMode.NoResize;
                 window.Show();
+                window.InitCefView(entryUri);
             }
 
-            var ctrlWindow = new DemoControlWindow(ShellApi);
+            var shellApiContext = ShellApiContext.Current;
+            //todo by config: dev not hide!
+            //shellApiContext.ShellApi1.ShowTask(true);
+
+            var ctrlWindow = new DemoControlWindow(shellApiContext);
             ctrlWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             ctrlWindow.WindowState = WindowState.Normal;
             ctrlWindow.Show();
             ctrlWindow.Topmost = true;
         }
 
-        private ShellWindow CreateShellWindow()
-        {
-            var shellWindow1 = new ShellWindow();
-            shellWindow1.WindowId = ShellConst.WindowId_Shell1;
-            
-            shellWindow1.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            shellWindow1.WindowState = WindowState.Maximized;
-            //shellWindow1.Title = WpfScreen.Primary.DeviceName;
-            return shellWindow1;
-        }
         private IList<ShellWindow> CreateShellWindows()
         {
+            var shellWindows = new List<ShellWindow>();
             var primary = WpfScreen.Primary;
-            
+
             var shellWindow1 = new ShellWindow();
             shellWindow1.WindowId = ShellConst.WindowId_Shell1;
-            //shellWindow1.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            //shellWindow1.WindowState = WindowState.Maximized;
 
             shellWindow1.Left = primary.DeviceBounds.Left;
             shellWindow1.Top = primary.DeviceBounds.Top;
             shellWindow1.Width = primary.DeviceBounds.Width;
             shellWindow1.Height = primary.DeviceBounds.Height;
             shellWindow1.Title = primary.DeviceName;
-            shellWindow1.Background = Brushes.White;
+            shellWindow1.Background = Brushes.YellowGreen;
 
-            var second = WpfScreen.AllScreens().Single(x => !x.IsPrimary);
-            var shellWindow2 = new ShellWindow();
-            shellWindow2.WindowId = ShellConst.WindowId_Shell2;
-            //shellWindow2.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            //shellWindow2.WindowState = WindowState.Maximized;
-
-            shellWindow2.Left = second.DeviceBounds.Left;
-            shellWindow2.Top = second.DeviceBounds.Top;
-            shellWindow2.Width = second.DeviceBounds.Width;
-            shellWindow2.Height = second.DeviceBounds.Height;
-            shellWindow2.Title = second.DeviceName;
-            shellWindow1.Background = Brushes.Yellow;
-
-            var shellWindows = new List<ShellWindow>();
             shellWindows.Add(shellWindow1);
-            shellWindows.Add(shellWindow2);
+
+            ShellWindow shellWindow2 = null;
+            var second = WpfScreen.AllScreens().FirstOrDefault(x => !x.IsPrimary);
+            if (second != null)
+            {
+                shellWindow2 = new ShellWindow();
+                shellWindow2.WindowId = ShellConst.WindowId_Shell2;
+
+                shellWindow2.Left = second.DeviceBounds.Left;
+                shellWindow2.Top = second.DeviceBounds.Top;
+                shellWindow2.Width = second.DeviceBounds.Width;
+                shellWindow2.Height = second.DeviceBounds.Height;
+                shellWindow2.Title = second.DeviceName;
+                shellWindow2.Background = Brushes.DarkGray;
+
+                shellWindows.Add(shellWindow2);
+            }
+
+
+            var shellApi1 = new ShellApi(this, shellWindow1, shellWindows.ToArray());
+            shellWindow1.BindShellApi(shellApi1);
+            ShellApiContext.Current.ShellApi1 = shellApi1;
+
+            if (shellWindow2 != null)
+            {
+                var shellApi2 = new ShellApi(this, shellWindow2, shellWindows.ToArray());
+                shellWindow2.BindShellApi(shellApi2);
+                ShellApiContext.Current.ShellApi2 = shellApi2;
+            }
+
             return shellWindows;
         }
     }

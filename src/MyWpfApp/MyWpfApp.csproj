@@ -148,6 +148,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="_Local\html\demo_control.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="_Local\html\callback.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

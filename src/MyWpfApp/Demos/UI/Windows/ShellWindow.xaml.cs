@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using MyCefLibs.CefBrowser;
+using MyWpfApp.Demos.UI.Shells;
 
 namespace MyWpfApp.Demos.UI.Windows
 {
@@ -9,6 +11,32 @@ namespace MyWpfApp.Demos.UI.Windows
         {
             InitializeComponent();
         }
+
+        public IShellApi ShellApi { get; set; }
+
+        public void BindShellApi(ShellApi shellApi)
+        {
+            this.ShellApi = shellApi;
+            shellApi.CurrentShell = this;
+        }
+
+        public void InitCefView(string entryUri)
+        {
+            var asyncJsObject = new AsyncJsObject();
+            asyncJsObject.Name = "appHost";
+
+            asyncJsObject.BindObject = ShellApi;
+
+            CefView = CefViewHelper.Create(asyncJsObject, entryUri, args =>
+            {
+                var message = string.Format("{0} => {1}", args.Url, args.StatusCode);
+                Dispatcher?.Invoke(() => { ShowMessage(message); });
+            });
+
+            CefView.AppendCefBrowser(GridForForeground);
+        }
+
+        public CefViewHelper CefView { get; set; }
 
         public string WindowId { get; set; }
 
@@ -28,7 +56,8 @@ namespace MyWpfApp.Demos.UI.Windows
 
         public void ShowMessage(string message)
         {
-            this.MessageBlock.Text = message;
+            var displayMsg = string.Format("{0} => {1}", this.WindowId, message);
+            this.MessageBlock.Text = displayMsg;
             Storyboard1.Begin();
         }
     }

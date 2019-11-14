@@ -8,10 +8,20 @@ namespace MyWpfApp.Demos.Boots
         public static void Startup(Application application)
         {
             //todo config
-            application.StartupUri = new Uri("Demos/UI/Windows/MasterWindow.xaml", UriKind.Relative);
+            var entrySetting = EntrySetting.Instance;
+            entrySetting.StartupFormUri = "Demos/UI/Windows/MasterWindow.xaml";
+            entrySetting.StartupHtmlUri = @"local://whatever/html/demo_control.html";
+
+            application.StartupUri = new Uri(entrySetting.StartupFormUri, UriKind.Relative);
             application.ShutdownMode = ShutdownMode.OnMainWindowClose;
-            //var environmentHelper = EnvironmentHelper.Instance;
-            //var environmentInfo = environmentHelper.CreateEnvironmentInfo();
         }
+    }
+
+    public class EntrySetting
+    {
+        public string StartupFormUri { get; set; }
+        public string StartupHtmlUri { get; set; }
+
+        public static EntrySetting Instance = new EntrySetting();
     }
 }

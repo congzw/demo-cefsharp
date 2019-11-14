@@ -9,13 +9,31 @@ namespace MyCefLibs.CefBrowser
     public class CefViewHelper
     {
         internal ChromiumWebBrowser Browser { get; set; }
+        public Action<UrlProcessed> UrlProcessedAction { get; set; }
 
-        public void InitCefBrowser(AsyncJsObject asyncJsObject, string uri)
+        public void InitCefBrowser(AsyncJsObject asyncJsObject, string uri, Action<UrlProcessed> action)
         {
+            UrlProcessedAction = action;
             var cefConfig = CefConfig.Default;
             Browser = cefConfig.CreateChromiumWebBrowser(true, asyncJsObject);
+            Browser.FrameLoadEnd += Browser_FrameLoadEnd;
             Browser.Address = uri;
         }
+        private void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        {
+            if (UrlProcessedAction != null && e.Url != "about:blank")
+            {
+                var errorActionArgs = new UrlProcessed { StatusCode = e.HttpStatusCode, Url = e.Url };
+                UrlProcessedAction(errorActionArgs);
+            }
+        }
+
+        //public void InitCefBrowser(AsyncJsObject asyncJsObject, string uri)
+        //{
+        //    var cefConfig = CefConfig.Default;
+        //    Browser = cefConfig.CreateChromiumWebBrowser(true, asyncJsObject);
+        //    Browser.Address = uri;
+        //}
 
         public void SetUri(string uri)
         {
@@ -36,10 +54,10 @@ namespace MyCefLibs.CefBrowser
             return container;
         }
 
-        public static CefViewHelper Create(AsyncJsObject asyncJsObject, string uri)
+        public static CefViewHelper Create(AsyncJsObject asyncJsObject, string uri, Action<UrlProcessed> action)
         {
             var cefViewHelper = new CefViewHelper();
-            cefViewHelper.InitCefBrowser(asyncJsObject, uri);
+            cefViewHelper.InitCefBrowser(asyncJsObject, uri, action);
             return cefViewHelper;
         }
 
@@ -56,8 +74,7 @@ namespace MyCefLibs.CefBrowser
         {
             ExecuteJavaScriptAsync($"alert('{message}')");
         }
-
-
+        
         public async void ExecuteCallbackAsync(dynamic callback, params object[] args)
         {
             if (callback == null)
@@ -75,5 +92,11 @@ namespace MyCefLibs.CefBrowser
                 await theCallback.ExecuteAsync(args);
             }
         }
+    }
+
+    public class UrlProcessed
+    {
+        public string Url { get; set; }
+        public int StatusCode { get; set; }
     }
 }

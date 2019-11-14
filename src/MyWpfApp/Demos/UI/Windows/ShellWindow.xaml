@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ShellWindow" Height="450" Width="800">
     <Grid>
-        <Canvas VerticalAlignment="Top" Height="46" ClipToBounds="True" Margin="0,138,0,0" ZIndex="1">
+        <Canvas VerticalAlignment="Top" Height="46" ClipToBounds="True" Margin="0,138,0,0" ZIndex="2">
             <StackPanel Name="MessagePanel">
                 <StackPanel.RenderTransform>
                     <TranslateTransform Y="0" />
@@ -28,5 +28,8 @@
                 </EventTrigger>
             </Canvas.Triggers>
         </Canvas>
+        <Grid Grid.Row="0" Grid.Column="0" x:Name="GridForForeground" ZIndex="1" Opacity="1">
+            <Button x:Name="btnReload" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-100 100 0 0" Padding="5" FontSize="17">this is a shell button</Button>
+        </Grid>
     </Grid>
 </Window>

@@ -34,7 +34,7 @@ namespace MyWpfApp
             var asyncJsObject = new AsyncJsObject();
             asyncJsObject.Name = "theVo";
             asyncJsObject.BindObject = this.TheJs;
-            var helper = CefViewHelper.Create(asyncJsObject, demoPage);
+            var helper = CefViewHelper.Create(asyncJsObject, demoPage, null);
 
             TheJs.MainCefViewHelper = helper;
 

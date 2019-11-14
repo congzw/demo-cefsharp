@@ -14,15 +14,16 @@ namespace MyWpfApp.Demos.UI.Shells
 
     public class ShellApi : IShellApi
     {
-        private bool _showTask;
-        public MasterWindow MasterWindow { get; }
+        public MasterWindow Master { get; set; }
+        public ShellWindow CurrentShell { get; set; }
+        public IList<ShellWindow> AllShells { get; set; }
 
-        public IList<ShellWindow> ShellWindows { get; set; }
-
-        public ShellApi(MasterWindow masterWindow, params ShellWindow[] shellWindows)
+        public ShellApi(MasterWindow masterWindow, ShellWindow current, params ShellWindow[] shellWindows)
         {
-            MasterWindow = masterWindow;
-            ShellWindows = shellWindows.ToList();
+            Master = masterWindow;
+            AllShells = shellWindows.ToList();
+            CurrentShell = current;
+            current.ShellApi = this;
         }
 
         public void Shutdown()
@@ -59,30 +60,25 @@ namespace MyWpfApp.Demos.UI.Shells
             //}
         }
 
-        public bool ShowTask
+        public void ShowTask(bool show)
         {
-            get => _showTask;
-            set
-            {
-                _showTask = value;
-                ClsWin32.ShowTask(_showTask);
-            }
+            ClsWin32.ShowTask(show);
         }
 
         public void CloseApp()
         {
-            MasterWindow.Dispatcher?.Invoke(() =>
+            Master.Dispatcher?.Invoke(() =>
             {
-                MasterWindow.AllowedClose = true;
-                MasterWindow.Close();
+                Master.AllowedClose = true;
+                Master.Close();
                 //Application.Current.Shutdown(); // Environment.Exit(0); would also suffice 
             });
         }
 
         public void RestartApp()
         {
-            MasterWindow.AllowedClose = true;
-            MasterWindow.Dispatcher?.Invoke(RestartCurrentApp);
+            Master.AllowedClose = true;
+            Master.Dispatcher?.Invoke(RestartCurrentApp);
         }
 
         public void UpdateApp()
@@ -92,20 +88,25 @@ namespace MyWpfApp.Demos.UI.Shells
 
         public void ShowWindowMessage(WindowMessage model)
         {
-            var shellWindow = FindShellWindow(model, true);
-            shellWindow?.Dispatcher?.Invoke(() => { shellWindow.ShowMessage(string.Format("{0} => ", shellWindow.WindowId) + model.Message); });
+            CurrentShell?.Dispatcher?.Invoke(() =>
+            {
+                CurrentShell.ShowMessage(model.Message);
+            });
         }
 
         public void SwitchPosition()
         {
-            if (ShellWindows.Count <= 1)
+            CurrentShell?.Dispatcher?.Invoke(() =>
             {
-                return;
-            }
+                if (AllShells.Count <= 1)
+                {
+                    return;
+                }
 
-            var one = ShellWindows[0];
-            var another = ShellWindows[1];
-            ChangePosition(one, another);
+                var one = AllShells[0];
+                var another = AllShells[1];
+                ChangePosition(one, another);
+            });
         }
 
         public AppEnvInfo GetAppEnvInfo()
@@ -124,31 +125,7 @@ namespace MyWpfApp.Demos.UI.Shells
             Application.Current.Exit += (s, e) => { Process.Start(Application.ResourceAssembly.Location); };
             Application.Current.Shutdown();
         }
-
-        private ShellWindow FindShellWindow(IWindowCommandArgs args, bool autoFindFirst = false)
-        {
-            var windowId = string.Empty;
-            if (args != null)
-            {
-                if (!string.IsNullOrWhiteSpace(args.WindowId))
-                {
-                    windowId = args.WindowId.Trim();
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(windowId))
-            {
-                if (autoFindFirst)
-                {
-                    windowId = ShellConst.WindowId_Shell1;
-                }
-            }
-
-            var theOne =
-                ShellWindows.FirstOrDefault(x => x.WindowId.Equals(windowId, StringComparison.OrdinalIgnoreCase));
-            return theOne;
-        }
-
+        
         private void ChangePosition(ShellWindow one, ShellWindow another)
         {
             var left = one.Left;
@@ -166,5 +143,13 @@ namespace MyWpfApp.Demos.UI.Shells
             another.Width = width;
             another.Height = height;
         }
+    }
+
+    public class ShellApiContext
+    {
+        public static ShellApiContext Current = new ShellApiContext();
+
+        public ShellApi ShellApi1 { get; set; }
+        public ShellApi ShellApi2 { get; set; }
     }
 }

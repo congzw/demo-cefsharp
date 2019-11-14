@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>demo page for control</title>
+    <script src="jquery-1.12.4.min.js"></script>
+    <script>
+        (function (window, $) {
+            'use strict';
+            
+            var show = function (message) {
+                var $message = $("#message");
+                var theDate = new Date().toLocaleString();
+                $message.html('<h2>js call: ' + message + ' => ' + theDate + '</h2>');
+                console.log('js call: ' + message);
+            };
+            var appHost = window.appHost;
+            window.myVo = function() {
+                return {
+                    restart: function () {
+                        show('restart invoked');
+                        appHost.restart();
+                    },
+                    shutdown: function () {
+                        show('shutdown invoked');
+                        appHost.shutdown();
+                    },
+                    closeApp: function () {
+                        show('closeApp invoked');
+                        appHost.closeApp();
+                    },
+                    restartApp: function () {
+                        show('restartApp invoked');
+                        appHost.restartApp();
+                    },
+                    switchPosition: function () {
+                        show('switchPosition invoked');
+                        appHost.switchPosition();
+                    }
+                };
+            }();
+
+        }(window, jQuery));
+    </script>
+</head>
+<body>
+    <div class="theContainer">
+        <div>
+            <div class="theArea">
+                <h2>callback demo</h2>
+            </div>
+        </div>
+        <div class="demo">
+            <hr />
+            <button type="button" onclick="myVo.restart()">Restart</button>
+            <button type="button" onclick="myVo.shutdown()">Shutdown</button>
+            <button type="button" onclick="myVo.closeApp()">CloseApp</button>
+            <button type="button" onclick="myVo.restartApp()">RestartApp</button>
+            <button type="button" onclick="myVo.switchPosition()">SwitchPosition</button>
+        </div>
+    </div>
+</body>
+</html>
