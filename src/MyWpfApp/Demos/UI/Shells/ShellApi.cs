@@ -9,7 +9,6 @@ namespace MyWpfApp.Demos.UI.Shells
 {
     public interface IShellApi : IMachineApi, IAppApi, IWindowApi, IViewApi
     {
-        
     }
 
     public class ShellApi : IShellApi
@@ -87,7 +86,8 @@ namespace MyWpfApp.Demos.UI.Shells
 
         public AppEnvInfo GetAppEnvInfo()
         {
-            throw new System.NotImplementedException();
+            var appEnvInfo = new AppEnvInfo();
+            return appEnvInfo;
         }
 
         public void InvokeViewCommand(ViewCommand cmd)

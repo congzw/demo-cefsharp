@@ -13,5 +13,6 @@
     }
     public class AppEnvInfo
     {
+        //todo
     }
 }
