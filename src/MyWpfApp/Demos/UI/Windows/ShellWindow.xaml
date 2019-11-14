@@ -7,6 +7,26 @@
         mc:Ignorable="d"
         Title="ShellWindow" Height="450" Width="800">
     <Grid>
-        
+        <Canvas VerticalAlignment="Top" Height="46" ClipToBounds="True" Margin="0,138,0,0" ZIndex="1">
+            <StackPanel Name="MessagePanel">
+                <StackPanel.RenderTransform>
+                    <TranslateTransform Y="0" />
+                </StackPanel.RenderTransform>
+                <TextBlock FontSize="36" Foreground="Red" Name="MessageBlock" Text="" />
+            </StackPanel>
+            <Canvas.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard Name="Storyboard1">
+                            <DoubleAnimation From="0" 
+                                             To="3000" 
+                                             Duration="0:0:6"
+                                             Storyboard.TargetName="MessagePanel"
+                                             Storyboard.TargetProperty="RenderTransform.X" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Canvas.Triggers>
+        </Canvas>
     </Grid>
 </Window>

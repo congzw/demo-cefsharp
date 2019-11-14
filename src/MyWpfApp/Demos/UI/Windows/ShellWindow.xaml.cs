@@ -19,7 +19,6 @@ namespace MyWpfApp.Demos.UI.Windows
             //can only be closed by:
             //1 master closed
             //2 application exit
-
             if (!AllowedClose)
             {
                 e.Cancel = true;
@@ -29,9 +28,8 @@ namespace MyWpfApp.Demos.UI.Windows
 
         public void ShowMessage(string message)
         {
-            MessageBox.Show(message);
-            //todo
-            //this.MessageBlock.Text = message;
+            this.MessageBlock.Text = message;
+            Storyboard1.Begin();
         }
     }
 }
