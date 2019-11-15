@@ -6,38 +6,42 @@
     <script>
         (function (window, $) {
             'use strict';
-            
+
             var show = function (message) {
                 var $message = $("#message");
                 var theDate = new Date().toLocaleString();
                 $message.html('<h2>js call: ' + message + ' => ' + theDate + '</h2>');
                 console.log('js call: ' + message);
             };
-            var appHost = window.appHost;
-            window.myVo = function() {
-                return {
-                    restart: function () {
-                        show('restart invoked');
-                        appHost.restart();
-                    },
-                    shutdown: function () {
-                        show('shutdown invoked');
-                        appHost.shutdown();
-                    },
-                    closeApp: function () {
-                        show('closeApp invoked');
-                        appHost.closeApp();
-                    },
-                    restartApp: function () {
-                        show('restartApp invoked');
-                        appHost.restartApp();
-                    },
-                    switchPosition: function () {
-                        show('switchPosition invoked');
-                        appHost.switchPosition();
-                    }
-                };
-            }();
+
+            window.CefSharp &&
+                window.CefSharp.BindObjectAsync("appHost").then(function () {
+                    var appHost = window.appHost;
+                    window.myVo = function () {
+                        return {
+                            restart: function () {
+                                show('restart invoked');
+                                appHost.restart();
+                            },
+                            shutdown: function () {
+                                show('shutdown invoked');
+                                appHost.shutdown();
+                            },
+                            closeApp: function () {
+                                show('closeApp invoked');
+                                appHost.closeApp();
+                            },
+                            restartApp: function () {
+                                show('restartApp invoked');
+                                appHost.restartApp();
+                            },
+                            switchPosition: function () {
+                                show('switchPosition invoked');
+                                appHost.switchPosition();
+                            }
+                        };
+                    }();
+                });
 
         }(window, jQuery));
     </script>

@@ -29,7 +29,15 @@ namespace MyCefLibs.CefBrowser
 
             if (asyncJsObject != null)
             {
-                chromiumWebBrowser.RegisterAsyncJsObject(asyncJsObject.Name, asyncJsObject.BindObject, (BindingOptions)asyncJsObject.BindingOptions);
+                var option = (BindingOptions)asyncJsObject.BindingOptions;
+                if (option == null)
+                {
+                    option = BindingOptions.DefaultBinder;
+                }
+
+                //chromiumWebBrowser.RegisterAsyncJsObject(asyncJsObject.Name, asyncJsObject.BindObject, option);
+                //The javascript object repository, one repository per ChromiumWebBrowser instance.
+                chromiumWebBrowser.JavascriptObjectRepository.Register(asyncJsObject.Name, asyncJsObject.BindObject, true, option);
             }
             return chromiumWebBrowser;
         }
@@ -40,7 +48,7 @@ namespace MyCefLibs.CefBrowser
             {
                 throw new InvalidOperationException("Cef already initialized!");
             }
-            
+
             var initialize = Cef.Initialize(cefSettings);
             if (!initialize)
             {
@@ -74,7 +82,7 @@ namespace MyCefLibs.CefBrowser
         public static CefConfig Default = new CefConfig();
 
         #region SupportAnyCpu
-        
+
         private static bool _resolverAutoCpu = false;
         // Will attempt to load missing assembly from either x86 or x64 subdir
         // Required by CefSharp to load the unmanaged dependencies when running using AnyCPU
